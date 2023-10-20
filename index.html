@@ -6,14 +6,55 @@
     <!-- Import Styles -->
     <link rel="stylesheet" href="./assets/styles.css" />
     <!-- Import Vue.js -->
-    <script src="https://unpkg.com/vue@3.0.0-beta.12/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
   </head>
   <body>
     <div id="app">
-      <h1>Product goes here</h1>
+      <div class="nav-bar"></div>
+        <div class="cart"> Cart({{cart}})</div>
+        <div class="product-container">
+          <div class="product-image">
+            <img :src="image" alt="calzino verde">
+          </div>
+          <div class="product-info">
+            <h1>{{ product}}</h1>
+            <a :href="url"> visita </a>
+            <p>{{ description }}</p>
+            <p v-if="inventory > 10"> In stock </p>
+            <p v-else-if=" inventory <= 10 && inventory >0"> Almost sold out </p>
+            <p v-else> Out of Stock </p>
+            <p v-show="onSale"> Item on Sale </p>
+            <ul>
+              <li v-for="detail in details">
+                {{detail}}
+              </li>
+            </ul>
+            <div v-for="variant in variants" 
+                 :key="variant.id" 
+                 @mouseover="updateImage(variant.image)"
+                 class="color-circle"
+                 :style="{backgroundColor:variant.color}">
+            </div>
+            <ul v-show="onSale">
+              <li v-for="size in sizes">
+                {{size}}
+              </li>
+            </ul>
+            <button class="button" 
+              :class="{disabledButton: !inStock}"
+              :disable="!inStock"
+              v-on:click="addToCart"> Add to Cart </button>
+            <button class="button" @click="removeItem"> remove Item </button>
+          </div>
+        </div>
     </div>
 
     <!-- Import Js -->
     <script src="./main.js"></script>
+  
+    <!-- Mount App -->    
+    <script>
+      const mountedApp = app.mount('#app')
+    </script>
   </body>
 </html>
